@@ -169,7 +169,7 @@ if(isset($_POST['submit'])) {
 
             //get the number of sites
             $siteCount = count($sitesNames);
-           
+
             //if the count is the same number as the number of sites, output it.
             if ($count == $siteCount) {
 

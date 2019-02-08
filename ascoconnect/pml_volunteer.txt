@@ -1,4 +1,4 @@
-ASCO Directory Service (asco_directoryservice)@font-your-face (fontyourface),Not installed
+@font-your-face (fontyourface),Not installed
 @font-your-face UI (fontyourface_ui),Not installed
 Edge Fonts (edge_fonts),Not installed
 Font Squirrel API (fontsquirrel),Not installed
