@@ -22,20 +22,20 @@ if(isset($_POST['submit'])) {
 //get the current directory
     $dir = getcwd();
 
-//ascoconnect project
+    //ascoconnect project
     if (isset($_POST['projectName']) && ($_POST['projectName'] == 'ascoconnect')) {
 
         //run the drush command to generate the pml text file for each site
         //asco_connection site
-        exec('~/drush-8.1.18/drush @remote-dev-asco-connection  pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/ascoconnect/pml_asco_connection.txt');
+        exec('~/drush-8.1.18/drush @remote-prod-asco-connection  pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/ascoconnect/pml_asco_connection.txt');
         //cancernet site
-        exec('~/drush-8.1.18/drush @remote-dev-cancer-net  pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/ascoconnect/pml_cancernet.txt');
+        exec('~/drush-8.1.18/drush @remote-prod-cancer-net  pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/ascoconnect/pml_cancernet.txt');
         //practice central site
-        exec('~/drush-8.1.18/drush @remote-dev-practice-central  pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/ascoconnect/pml_practicecentral.txt');
+        //exec('~/drush-8.1.18/drush @remote-dev-practice-central  pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/ascoconnect/pml_practicecentral.txt');
         //tapur site
-        exec('~/drush-8.1.18/drush @remote-dev-tapur  pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/ascoconnect/pml_tapur.txt');
+        exec('~/drush-8.1.18/drush @remote-prod-tapur  pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/ascoconnect/pml_tapur.txt');
         //volunteer portal site
-        exec('~/drush-8.1.18/drush @remote-dev-volunteer-portal  pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/ascoconnect/pml_volunteer.txt');
+        exec('~/drush-8.1.18/drush @remote-prod-volunteer-portal  pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/ascoconnect/pml_volunteer.txt');
 
         //merge all pml text file into the pmls_ascoconeect.txt file
         //remove the previous text in the plms_ascoconnect.txt file
@@ -44,43 +44,81 @@ if(isset($_POST['submit'])) {
         exec('cat ' . $dir . '/ascoconnect/pml_asco_connection.txt >> ' . $dir . '/pmls_ascoconnect.txt');
         exec('echo "cancernet" >> ' . $dir . '/pmls_ascoconnect.txt');
         exec('cat ' . $dir . '/ascoconnect/pml_cancernet.txt >> ' . $dir . '/pmls_ascoconnect.txt');
-        exec('echo "practicecentral" >> ' . $dir . '/pmls_ascoconnect.txt');
-        exec('cat ' . $dir . '/ascoconnect/pml_practicecentral.txt >> ' . $dir . '/pmls_ascoconnect.txt');
+        //exec('echo "practicecentral" >> ' . $dir . '/pmls_ascoconnect.txt');
+        //exec('cat ' . $dir . '/ascoconnect/pml_practicecentral.txt >> ' . $dir . '/pmls_ascoconnect.txt');
         exec('echo "tapur" >> ' . $dir . '/pmls_ascoconnect.txt');
         exec('cat ' . $dir . '/ascoconnect/pml_tapur.txt >> ' . $dir . '/pmls_ascoconnect.txt');
         exec('echo "volunteer" >> ' . $dir . '/pmls_ascoconnect.txt');
         exec('cat ' . $dir . '/ascoconnect/pml_volunteer.txt >> ' . $dir . '/pmls_ascoconnect.txt');
 
-        $headers = array('Module', 'asco_connection', 'cancernet', 'practicecentral', 'tapur', 'volunteer');
-        $sitesNames = array('asco_connection', 'cancernet', 'practicecentral', 'tapur', 'volunteer');
+        $headers = array('Module', 'asco_connection', 'cancernet', 'tapur', 'volunteer');
+        $sitesNames = array('asco_connection', 'cancernet', 'tapur', 'volunteer');
 
     } else { //asco project
 
         //run the drush command to generate the pml text file for each site
         /*
-         * @remote-dev-am-microsite
-           @remote-dev-qc-microsite
-           @remote-dev-gi-microsite
-           @remote-dev-gu-microsite
-           @remote-dev-ccf-org
-           @remote-dev-asco-org
-           @remote-dev-asco-university
+
+       // www.asco.org
+       // quality.asco.org
+      //  am.asco.org
+       // ascodirect.org
+        //boa.asco.org
+       // cancerlinq.org
+       // east-boa.asco.org
+      //  west-boa.asco.org
+       // central-boa.asco.org
+       // gicasym.org
+       // gucasym.org
+      //  immunosym.org
+      //  join.asco.org
+        //conquer.org
+      //  opc.asco.org
+       // pallonc.org
+       // survivorsym.org
+       // university.asco.org
+       // workload.asco.org
          *
          */
         //am microsite site
-        exec('~/drush-8.1.18/drush  @remote-dev-am-microsite  pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/asco/pml_ammicrosite.txt');
+        exec('~/drush-8.1.18/drush  @remote-prod-am-microsite  pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/asco/pml_ammicrosite.txt');
         //qc microsite
-        exec('~/drush-8.1.18/drush  @remote-dev-qc-microsite pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/asco/pml_qcmicrosite.txt');
+        exec('~/drush-8.1.18/drush  @remote-prod-qc-microsite pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/asco/pml_qcmicrosite.txt');
         //gi microsite
-        exec('~/drush-8.1.18/drush @remote-dev-gi-microsite  pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/asco/pml_gimicrosite.txt');
+        exec('~/drush-8.1.18/drush @remote-prod-gi-microsite  pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/asco/pml_gimicrosite.txt');
         //gu microsite
-        exec('~/drush-8.1.18/drush @remote-dev-gu-microsite  pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/asco/pml_gumicrosite.txt');
-        //ccf org site
-        exec('~/drush-8.1.18/drush @remote-dev-ccf-org  pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/asco/pml_ccforg.txt');
+        exec('~/drush-8.1.18/drush @remote-prod-gu-microsite  pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/asco/pml_gumicrosite.txt');
+        //conquer.org site
+        exec('~/drush-8.1.18/drush @remote-prod-ccf-org  pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/asco/pml_ccforg.txt');
         //asco org site
-        exec('~/drush-8.1.18/drush @remote-dev-asco-org  pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/asco/pml_ascorg.txt');
+        exec('~/drush-8.1.18/drush @remote-prod-asco-org  pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/asco/pml_ascorg.txt');
         //asco university site
-        exec('~/drush-8.1.18/drush @remote-dev-asco-university  pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/asco/pml_ascouniversity.txt');
+        exec('~/drush-8.1.18/drush @remote-prod-asco-university  pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/asco/pml_ascouniversity.txt');
+        // ascodirect.org site
+        exec('~/drush-8.1.18/drush @remote-prod-ascodirect  pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/asco/pml_ascodirect.txt');
+        // boa.asco.org site
+        exec('~/drush-8.1.18/drush @remote-prod-boa2-microsite  pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/asco/pml_boa.txt');
+        // cancerlinq site
+        exec('~/drush-8.1.18/drush @remote-prod-cancerlinq  pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/asco/pml_cancerlinq.txt');
+        //east-boa.asco.orgsite
+        exec('~/drush-8.1.18/drush @remote-prod-east-boa-microsite  pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/asco/pml_eastboa.txt');
+       //west-boa.asco.orgsite
+        exec('~/drush-8.1.18/drush @remote-prod-west-boa-microsite  pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/asco/pml_westboa.txt');
+        //central-boa.asco.orgsite
+        exec('~/drush-8.1.18/drush @remote-prod-central-boa-microsite  pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/asco/pml_centralboa.txt');
+        // immunosym.org site
+        exec('~/drush-8.1.18/drush @remote-prod-immunosym-microsite  pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/asco/pml_immunosym.txt');
+        // join.asco.org site
+        exec('~/drush-8.1.18/drush @remote-prod-benefits-microsite  pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/asco/pml_joinasco.txt');
+        // opc.asco.org site
+        exec('~/drush-8.1.18/drush @remote-prod-opc-microsite   pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/asco/pml_opcasco.txt');
+        //pallonc.org site
+        exec('~/drush-8.1.18/drush @remote-prod-pallonc-microsite   pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/asco/pml_pallonc.txt');
+        // survivorsym.org site
+        exec('~/drush-8.1.18/drush @remote-prod-survivorsym-microsite   pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/asco/pml_survivorsym.txt');
+        //   workload.asco.org site
+        exec('~/drush-8.1.18/drush @remote-prod-workload   pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/asco/pml_workload.txt');
+
 
 
         //merge all pml text file into the pmls_asco.txt file
@@ -100,10 +138,35 @@ if(isset($_POST['submit'])) {
         exec('cat ' . $dir . '/asco/pml_ascorg.txt >> ' . $dir . '/pmls_asco.txt');
         exec('echo "asco-university" >> ' . $dir . '/pmls_asco.txt');
         exec('cat ' . $dir . '/asco/pml_ascouniversity.txt >> ' . $dir . '/pmls_asco.txt');
+        exec('echo "asco-direct" >> ' . $dir . '/pmls_asco.txt');
+        exec('cat ' . $dir . '/asco/pml_ascodirect.txt >> ' . $dir . '/pmls_asco.txt');
+        exec('echo "boa" >> ' . $dir . '/pmls_asco.txt');
+        exec('cat ' . $dir . '/asco/pml_boa.txt >> ' . $dir . '/pmls_asco.txt');
+        exec('echo "cancerlinq" >> ' . $dir . '/pmls_asco.txt');
+        exec('cat ' . $dir . '/asco/pml_cancerlinq.txt >> ' . $dir . '/pmls_asco.txt');
+        exec('echo "east-boa" >> ' . $dir . '/pmls_asco.txt');
+        exec('cat ' . $dir . '/asco/pml_eastboa.txt >> ' . $dir . '/pmls_asco.txt');
+        exec('echo "west-boa" >> ' . $dir . '/pmls_asco.txt');
+        exec('cat ' . $dir . '/asco/pml_westboa.txt >> ' . $dir . '/pmls_asco.txt');
+        exec('echo "central-boa" >> ' . $dir . '/pmls_asco.txt');
+        exec('cat ' . $dir . '/asco/pml_centralboa.txt >> ' . $dir . '/pmls_asco.txt');
+        exec('echo "immunosym" >> ' . $dir . '/pmls_asco.txt');
+        exec('cat ' . $dir . '/asco/pml_immunosym.txt >> ' . $dir . '/pmls_asco.txt');
+        exec('echo "joinasco" >> ' . $dir . '/pmls_asco.txt');
+        exec('cat ' . $dir . '/asco/pml_joinasco.txt >> ' . $dir . '/pmls_asco.txt');
+        exec('echo "opcasco" >> ' . $dir . '/pmls_asco.txt');
+        exec('cat ' . $dir . '/asco/pml_opcasco.txt >> ' . $dir . '/pmls_asco.txt');
+        exec('echo "pallonc" >> ' . $dir . '/pmls_asco.txt');
+        exec('cat ' . $dir . '/asco/pml_pallonc.txt >> ' . $dir . '/pmls_asco.txt');
+        exec('echo "survivorsym" >> ' . $dir . '/pmls_asco.txt');
+        exec('cat ' . $dir . '/asco/pml_survivorsym.txt >> ' . $dir . '/pmls_asco.txt');
+        exec('echo "workload" >> ' . $dir . '/pmls_asco.txt');
+        exec('cat ' . $dir . '/asco/pml_workload.txt >> ' . $dir . '/pmls_asco.txt');
 
-
-        $headers = array('Module', 'am-microsite', 'qc-microsite', 'gi-microsite', 'gu-microsite', 'ccf-org', 'asco-org', 'asco-university');
-        $sitesNames = array('am-microsite', 'qc-microsite', 'gi-microsite', 'gu-microsite', 'ccf-org', 'asco-org', 'asco-university');
+        $headers = array('Module','am-microsite', 'qc-microsite', 'gi-microsite', 'gu-microsite', 'ccf-org', 'asco-org', 'asco-university','asco-direct',
+                                        'boa','cancerlinq','east-boa','west-boa','central-boa','immunosym','joinasco','opcasco','pallonc','survivorsym','workload');
+        $sitesNames = array('am-microsite', 'qc-microsite', 'gi-microsite', 'gu-microsite', 'ccf-org', 'asco-org', 'asco-university','asco-direct',
+                            'boa','cancerlinq','east-boa','west-boa','central-boa','immunosym','joinasco','opcasco','pallonc','survivorsym','workload');
 
     }//else
 
@@ -202,14 +265,14 @@ if(isset($_POST['submit'])) {
             $csvFileName = 'pml_asco_report.csv';
 
         }//else
-//open the report file.
+        //open the report file.
         $reportFile = fopen($csvFileName, "w");
 
-//write it to the file
+        //write it to the file
         foreach ($fileContents as $fields) {
             fputcsv($reportFile, $fields);
         }
-//close the file
+        //close the file
         fclose($reportFile);
 
         echo 'CSV file has been created in ' . $dir;
