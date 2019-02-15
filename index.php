@@ -25,7 +25,7 @@ if(isset($_POST['submit'])) {
     //ascoconnect project
     if (isset($_POST['projectName']) && ($_POST['projectName'] == 'ascoconnect')) {
 
-        //run the drush command to generate the pml text file for each site
+    //run the drush command to generate the pml text file for each site
         //asco_connection site
         exec('~/drush-8.1.18/drush @remote-prod-asco-connection  pml --no-core --type=module --fields=name,status --status="disabled,not installed" --format=csv | cat > ' . $dir . '/ascoconnect/pml_asco_connection.txt');
         //cancernet site
@@ -51,7 +51,7 @@ if(isset($_POST['submit'])) {
         exec('echo "volunteer" >> ' . $dir . '/pmls_ascoconnect.txt');
         exec('cat ' . $dir . '/ascoconnect/pml_volunteer.txt >> ' . $dir . '/pmls_ascoconnect.txt');
 
-        $headers = array('Module', 'asco_connection', 'cancernet', 'tapur', 'volunteer');
+        $headers = array('Module', 'Type', 'asco_connection', 'cancernet', 'tapur', 'volunteer');
         $sitesNames = array('asco_connection', 'cancernet', 'tapur', 'volunteer');
 
     } else { //asco project
@@ -177,11 +177,15 @@ if(isset($_POST['submit'])) {
 
         if ($_POST['projectName'] == 'ascoconnect') {
 
+            //use one of sites for pm-info command
+            $target_site ='@remote-prod-asco-connection';
             $target_file = 'pmls_ascoconnect.txt';
             echo "The file pmls_ascoconnect.txt has been created.<br><br>";
 
         } else {
 
+            //use one of sites for pm-info command
+            $target_site ='@remote-prod-am-microsite';
             $target_file = 'pmls_asco.txt';
             echo "The file pmls_asco.txt has been created.<br><br>";
 
@@ -237,6 +241,29 @@ if(isset($_POST['submit'])) {
             if ($count == $siteCount) {
 
                 $siteStatus = array();
+                $path = '';
+                $machine_name='';
+
+                //get the module's path here
+                //strip the name string to get only the machine name
+                if(strpos($name, '(')!==false){
+
+                    $pattern = '/\(/';
+                    $machine_name = preg_split($pattern, $name);
+                    $machine_name = preg_replace('/\)/','' ,$machine_name);
+                    //run a command to get the module's info
+                    //**note - the selected site name can be any other site.  the command just to get a selected module's path
+                    $module_path = shell_exec('~/drush-8.1.18/drush '.$target_site.'  pm-info --fields=path '.end($machine_name));
+
+                    //echo 'machinename  '.end($machine_name).'<br>';
+                    if(strripos($module_path, 'contrib')!==false){
+                        $module_type = 'contrib';
+
+                    }elseif(strripos($module_path, 'custom')!==false){
+                        $module_type = 'custom';
+                    }
+
+                }//if
 
                 //get module status for each site
                 foreach ($sitesNames as $value) {
@@ -246,7 +273,7 @@ if(isset($_POST['submit'])) {
                 }//foreach
 
                 //get the module status for each site
-                array_unshift($siteStatus, $name);
+                array_unshift($siteStatus, $name,$module_type);
 
                 //add to the file content
                 $fileContents[] = $siteStatus;
