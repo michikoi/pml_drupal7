@@ -163,7 +163,7 @@ if(isset($_POST['submit'])) {
         exec('echo "workload" >> ' . $dir . '/pmls_asco.txt');
         exec('cat ' . $dir . '/asco/pml_workload.txt >> ' . $dir . '/pmls_asco.txt');
 
-        $headers = array('Module','am-microsite', 'qc-microsite', 'gi-microsite', 'gu-microsite', 'ccf-org', 'asco-org', 'asco-university','asco-direct',
+        $headers = array('Module','Type','am-microsite', 'qc-microsite', 'gi-microsite', 'gu-microsite', 'ccf-org', 'asco-org', 'asco-university','asco-direct',
                                         'boa','cancerlinq','east-boa','west-boa','central-boa','immunosym','joinasco','opcasco','pallonc','survivorsym','workload');
         $sitesNames = array('am-microsite', 'qc-microsite', 'gi-microsite', 'gu-microsite', 'ccf-org', 'asco-org', 'asco-university','asco-direct',
                             'boa','cancerlinq','east-boa','west-boa','central-boa','immunosym','joinasco','opcasco','pallonc','survivorsym','workload');
